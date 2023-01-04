@@ -19,7 +19,7 @@ def download_video(wanted_link, wanted_folder=None):
     vid_response = requests.get(wanted_link)
     vid_soup = BeautifulSoup(vid_response.text, "html.parser")
     a = vid_soup.find("a", {"href": re.compile("mp4$")})
-    video_link = f'{BASE_LINK}{a["href"]}'
+    video_link = f'{a["href"]}' if a["href"].startswith("http") else f'{BASE_LINK}{a["href"]}'
 
     download = requests.get(video_link, stream=True)
     total_size_in_bytes = int(download.headers.get("content-length", 0))
